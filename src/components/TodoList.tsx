@@ -1,10 +1,10 @@
 import './styles.css'
-import { Todo } from './model'
+import { Todo, Actions } from './model'
 import SingleTodo from './SingleTodo'
 
 interface Props {
     todos: Todo[]
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+    setTodos: React.Dispatch<Actions>
 }
 
 const TodoList: React.FC<Props> = ({todos, setTodos}) => {

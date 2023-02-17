@@ -6,10 +6,11 @@ export interface Todo {
 }
 
 
-type Actions = 
+export type Actions = 
     | {type:'add', payload: string} 
     | {type:'remove', payload: number} 
     | {type: 'done', payload: number}
+    | {type: 'edit', payload: { id: number, text: string }}
 
 export const TodoReducer = (state: Todo[],action: Actions) => {
     switch(action.type){
@@ -21,7 +22,11 @@ export const TodoReducer = (state: Todo[],action: Actions) => {
             return state.filter((todo)=>todo.id !== action.payload)
         case 'done':
             return state.map((todo)=>
-                todo.id !== action.payload ? {...todo, isDone: !todo.isDone}: todo
+                todo.id === action.payload ? {...todo, isDone: !todo.isDone}: todo
+            )
+        case 'edit':
+            return state.map((todo)=>
+                todo.id === action.payload.id? {...todo, todo: action.payload.text}: todo   
             )
         default:
             return state

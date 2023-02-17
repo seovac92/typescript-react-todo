@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Todo } from './model';
+import { Todo, Actions } from './model';
 import './styles.css'
 import { AiFillEdit,AiFillDelete } from 'react-icons/ai'
 import { MdDone } from 'react-icons/md'
@@ -7,7 +7,7 @@ import { MdDone } from 'react-icons/md'
 interface Props {
     todo: Todo
     todos: Todo[]
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+    setTodos: React.Dispatch<Actions>
 }
 
 const SingleTodo: React.FC<Props> = ({todo,todos,setTodos}) => {
@@ -17,27 +17,17 @@ const SingleTodo: React.FC<Props> = ({todo,todos,setTodos}) => {
 
 
     const handleDone = (id: number) => {
-        setTodos(
-            todos.map((todo) =>
-                todo.id === id ? {...todo, isDone: !todo.isDone}: todo
-            )
-        )
+        setTodos({type: 'done', payload: id})
     }
 
     const handleDelete = (id: number) => {
-        setTodos(
-            todos.filter((todo) =>
-                todo.id !== id            
-            )
-        )
+        setTodos({type: 'remove', payload: id})
     }
 
     const handleEdit = (e: React.FormEvent, id: number) => {
         e.preventDefault()
 
-        setTodos(todos.map((todo)=>(
-            todo.id === id?{...todo,todo:editTodo}: todo
-        )))
+        setTodos({type:'edit',payload:{id:id, text:editTodo}})
         setEdit(false)
     }
     const inputRef = useRef<HTMLInputElement>(null)
